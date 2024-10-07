@@ -23,21 +23,29 @@ namespace CatalogMicroservice.Services.Implements
             return _mapper.MapList(props);
         }
 
-        public async Task Create(ProductPropertyDto productPropertyDto)
+        public async Task<ProductPropertyDto> Create(ProductPropertyDto productPropertyDto)
         {
             var prop=_mapper.Map(productPropertyDto);
             await _repository.Add(prop);
+            return _mapper.Map(prop);
         }
 
-        public async Task Update(long id, ProductPropertyDto productPropertyDto)
+        public async Task<ProductPropertyDto> Update(long id, ProductPropertyDto productPropertyDto)
         {
             var prop = _mapper.Map(productPropertyDto);
             await _repository.Update(id, prop);
+            return _mapper.Map(prop);
         }
 
-        public Task Delete(long id)
+        public async Task<bool> Delete(long id)
         {
-            throw new NotImplementedException();
+            var prop=await _repository.GetById(id);
+            if (prop != null)
+            {
+                await _repository.Delete(id);
+                return true;
+            }
+            return false;
         }
 
         public Task<IEnumerable<ProductPropertyDto>> Search(string searchString)

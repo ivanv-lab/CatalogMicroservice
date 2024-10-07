@@ -6,10 +6,10 @@ namespace CatalogMicroservice.Services.Interfaces
     public interface IProductPropertyService
     {
         public Task<IEnumerable<ProductPropertyDto>> GetAll();
-        public Task Create(ProductPropertyDto productPropertyDto);
-        public Task Update(long id,
+        public Task<ProductPropertyDto> Create(ProductPropertyDto productPropertyDto);
+        public Task<ProductPropertyDto> Update(long id,
             ProductPropertyDto productPropertyDto);
-        public Task Delete(long id);
+        public Task<bool> Delete(long id);
         public Task<IEnumerable<ProductPropertyDto>> Search
             (string searchString);
     }

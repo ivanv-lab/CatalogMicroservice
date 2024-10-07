@@ -1,6 +1,43 @@
-﻿namespace CatalogMicroservice.Controllers
+﻿using CatalogMicroservice.DTO;
+using CatalogMicroservice.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CatalogMicroservice.Controllers
 {
-    public class ProductCategoryController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductCategoryController:ControllerBase
     {
+        private readonly IProductCategoryService _service;
+        public ProductCategoryController(IProductCategoryService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            var category=await _service.GetById(id);
+            return Ok(category);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var categories = await _service.GetAll();
+            return Ok(categories);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create
+            ([FromBody] ProductCategoryDto request)
+        {
+            var newCat=await _service.Create(request);
+            return Ok(newCat);
+        }
+        [HttpPost("{id}")]
+        public Task<IActionResult> Update
+            ([FromBody] ProductCategoryDto request)
+        {
+
+        }
     }
 }

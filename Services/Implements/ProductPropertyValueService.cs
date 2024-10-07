@@ -17,15 +17,23 @@ namespace CatalogMicroservice.Services.Implements
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task Create(ProductPropertyValueDto productPropertyValueDto)
+        public async Task<ProductPropertyValueDto> 
+            Create(ProductPropertyValueDto productPropertyValueDto)
         {
             var propVal=_mapper.Map(productPropertyValueDto);
             await _repository.Add(propVal);
+            return _mapper.Map(propVal);
         }
 
-        public async Task Delete(long id)
+        public async Task<bool> Delete(long id)
         {
-            await _repository.DeleteById(id);
+            var propVal=await _repository.GetById(id);
+            if(propVal != null)
+            {
+                await _repository.DeleteById(id);
+                return true;
+            }
+            return false;
         }
 
         public async Task<IEnumerable<ProductPropertyValueDto>> GetAll()
@@ -45,10 +53,12 @@ namespace CatalogMicroservice.Services.Implements
             throw new NotImplementedException();
         }
 
-        public async Task Update(long id, ProductPropertyValueDto productPropertyValueDto)
+        public async Task<ProductPropertyValueDto>
+            Update(long id, ProductPropertyValueDto productPropertyValueDto)
         {
             var propVal = _mapper.Map(productPropertyValueDto);
             await _repository.Update(id, propVal);
+            return _mapper.Map(propVal);
         }
     }
 }

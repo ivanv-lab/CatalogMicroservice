@@ -57,7 +57,7 @@ namespace CatalogMicroservice.Services.Implements
         public async Task Update(long id, ProductDto productDto)
         {
             var prod = _mapper.Map(productDto);
-            await _repository.Update(id, prod);
+            await _repository.Update(id,prod);
         }
     }
 }

@@ -16,18 +16,25 @@ namespace CatalogMicroservice.Services.Implements
             _repository = repository;
         }
 
-        public async Task Create(ProductCategoryDto productCategoryDto)
+        public async Task<ProductCategoryDto> Create(ProductCategoryDto productCategoryDto)
         {
             var cat=_mapper.Map(productCategoryDto);
             await _repository.Add(cat);
+            return _mapper.Map(cat);
         }
 
-        public async Task Delete(long id)
+        public async Task<bool> Delete(long id)
         {
-            await _repository.Delete(id);
+            var cat = await _repository.GetById(id);
+            if (cat != null)
+            {
+                await _repository.Delete(id);
+                return true;
+            }
+            return false;
         }
 
-        public async Task<IEnumerable<ProductCategoryDto>> GetAll(long id)
+        public async Task<IEnumerable<ProductCategoryDto>> GetAll()
         {
             var cats = await _repository.GetAll();
             return _mapper.MapList(cats);
@@ -44,10 +51,11 @@ namespace CatalogMicroservice.Services.Implements
             throw new NotImplementedException();
         }
 
-        public async Task Update(long id, ProductCategoryDto productCategoryDto)
+        public async Task<ProductCategoryDto> Update(long id, ProductCategoryDto productCategoryDto)
         {
             var cat = _mapper.Map(productCategoryDto);
             await _repository.Update(id, cat);
+            return _mapper.Map(cat);
         }
     }
 }
