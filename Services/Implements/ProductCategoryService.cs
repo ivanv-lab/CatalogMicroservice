@@ -16,7 +16,7 @@ namespace CatalogMicroservice.Services.Implements
             _repository = repository;
         }
 
-        public async Task<ProductCategoryDto> Create(ProductCategoryDto productCategoryDto)
+        public async Task<ProductCategoryDto> Create(ProductCategoryCreateDto productCategoryDto)
         {
             var cat=_mapper.Map(productCategoryDto);
             await _repository.Add(cat);
@@ -46,12 +46,28 @@ namespace CatalogMicroservice.Services.Implements
             return _mapper.Map(cat);
         }
 
-        public Task<IEnumerable<ProductCategoryDto>> Search(string searchString)
+        public async Task<int> GetCount()
         {
-            throw new NotImplementedException();
+            return await _repository.GetCount();
         }
 
-        public async Task<ProductCategoryDto> Update(long id, ProductCategoryDto productCategoryDto)
+        public async Task<IEnumerable<ProductCategoryDto>> Search(string searchString)
+        {
+            var categories=await _repository.GetAll();
+            if(!string.IsNullOrEmpty(searchString)
+                || searchString==" ")
+            {
+                searchString=searchString.ToLower();
+                categories = categories.Where(
+                    c => c.Name.ToLower()
+                    .Contains(searchString)
+                    || c.Id.ToString().Contains(searchString));
+            }
+            
+            return _mapper.MapList(categories);
+        }
+
+        public async Task<ProductCategoryDto> Update(long id, ProductCategoryCreateDto productCategoryDto)
         {
             var cat = _mapper.Map(productCategoryDto);
             await _repository.Update(id, cat);

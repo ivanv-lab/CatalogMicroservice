@@ -53,6 +53,12 @@ namespace CatalogMicroservice.Repositories.Implements
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetCount()
+        {
+            return await _context.Products
+                .CountAsync();
+        }
+
         public async Task Update(long id, Product product)
         {
             var prod = await _context.Products.FindAsync(id);

@@ -30,6 +30,16 @@ namespace CatalogMicroservice.Mappings
                 Category = _mapper.Map(model.Category)
             };
         }
+        public Product Map(ProductCreateDto dto)
+        {
+            return new Product
+            {
+                Name = dto.Name,
+                Count = dto.Count,
+                Price = dto.Price,
+                ProductCategoryId = dto.ProductCategoryId
+            };
+        }
         public IEnumerable<ProductDto> MapList(
             IEnumerable<Product> models)
         {

@@ -34,34 +34,60 @@ namespace CatalogMicroservice.Controllers
             return Ok(prods);
         }
         [HttpGet("filters/")]
-        public async Task<IActionResult> Filters()
+        public async Task<IActionResult> Filters(
+            [FromQuery]string? searchString,
+            [FromQuery]string? sortOrder,
+            [FromQuery]string? sortItem,
+            [FromQuery]int page=1)
         {
-            //Доделать
             return Ok();
+            //Доделать
         }
         [HttpPost]
         public async Task<IActionResult> Create
-            ([FromBody] ProductDto request)
+            ([FromBody] ProductCreateDto request)
         {
             var prod=await _service.Create(request);
             return Ok(prod);
         }
         [HttpPost("{id}")]
         public async Task<IActionResult> Update
-            ([FromBody] ProductDto request)
+            ([FromBody] ProductCreateDto request)
         {
-            var newProd=
+            var updateProd = await _service
+                .Update(request.Id, request);
+            return Ok(updateProd);
         }
         [HttpPost("delete/{id}")]
-        public Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-
+            var prod=await _service.Delete(id);
+            if (prod)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
         [HttpGet("search/")]
-        public async Task<IActionResult> Search()
+        public async Task<IActionResult> Search(
+            [FromQuery] string? sesarchString,
+            [FromQuery]int page=1)
         {
-            //Доделать
-            return Ok();
+            const int pageSize = 10;
+            var products = await _service.Search(sesarchString);
+            products = products.Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            var count = await _service.GetCount();
+            var response = new
+            {
+                items = products,
+                currentPage = page,
+                totalPages =
+                (int)Math.Ceiling((double)count / pageSize),
+                totalCount = count
+            };
+            return Ok(response);
         }
     }
 }

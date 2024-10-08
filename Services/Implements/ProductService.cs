@@ -2,6 +2,8 @@
 using CatalogMicroservice.Mappings;
 using CatalogMicroservice.Repositories.Interfaces;
 using CatalogMicroservice.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Eventing.Reader;
 
 namespace CatalogMicroservice.Services.Implements
 {
@@ -15,18 +17,28 @@ namespace CatalogMicroservice.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task Create(ProductDto productDto)
+        public async Task<ProductDto> Create(ProductCreateDto productDto)
         {
             var prod=_mapper.Map(productDto);
             await _repository.Add(prod);
+            return _mapper.Map(prod);
         }
 
-        public async Task Delete(long id)
+        public async Task<bool> Delete(long id)
         {
-            await _repository.Delete(id);
+            var prod=await _repository.GetById(id);
+            if (prod != null)
+            {
+                await _repository.Delete(id);
+                return true;
+            }
+            return false;
         }
 
-        public Task<IEnumerable<ProductDto>> Filters()
+        public Task<IEnumerable<ProductDto>> Filters(
+            string? searchString,
+            string? sortOrder,
+            string? sortItem)
         {
             throw new NotImplementedException();
         }
@@ -49,15 +61,33 @@ namespace CatalogMicroservice.Services.Implements
             return _mapper.Map(prod);
         }
 
-        public Task<IEnumerable<ProductDto>> Search(string searchString)
+        public async Task<IEnumerable<ProductDto>> Search(string searchString)
         {
-            throw new NotImplementedException();
+            var prods = await _repository.GetAll();
+
+            if(!string.IsNullOrEmpty(searchString)
+                || searchString==" ")
+            {
+                searchString = searchString.ToLower();
+                prods=prods.Where(p=>p.Id.ToString().Contains(searchString)
+                || p.Name.ToLower().Contains(searchString)
+                || p.Price.ToString().Contains(searchString)
+                || p.Count.ToString().Contains(searchString)
+                || p.Category.Name.ToLower().Contains(searchString));
+            }
+
+            return _mapper.MapList(prods);
         }
 
-        public async Task Update(long id, ProductDto productDto)
+        public async Task<ProductDto> Update(long id, ProductCreateDto productDto)
         {
-            var prod = _mapper.Map(productDto);
-            await _repository.Update(id,prod);
+            var prod=_mapper.Map(productDto);
+            await _repository.Update(id, prod);
+            return _mapper.Map(prod);
+        }
+        public async Task<int> GetCount()
+        {
+            return await _repository.GetCount();
         }
     }
 }

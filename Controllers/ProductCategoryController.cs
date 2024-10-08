@@ -28,16 +28,19 @@ namespace CatalogMicroservice.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create
-            ([FromBody] ProductCategoryDto request)
+            ([FromBody] ProductCategoryCreateDto request)
         {
             var newCat=await _service.Create(request);
             return Ok(newCat);
         }
-        [HttpPost("{id}")]
-        public Task<IActionResult> Update
-            ([FromBody] ProductCategoryDto request)
-        {
 
+        [HttpPost]
+        public async Task<IActionResult> Update
+            ([FromBody] ProductCategoryCreateDto request)
+        {
+            var updateCategory = await _service
+                .Update(request.Id, request);
+            return Ok(updateCategory);
         }
     }
 }

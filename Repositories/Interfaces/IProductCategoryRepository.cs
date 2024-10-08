@@ -11,5 +11,6 @@ namespace CatalogMicroservice.Repositories.Interfaces
         //Prod
         public Task<ProductCategory> GetById(long id);
         public Task<IEnumerable<ProductCategory>> GetAll();
+        public Task<int> GetCount();
     }
 }

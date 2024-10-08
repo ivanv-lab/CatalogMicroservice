@@ -19,6 +19,14 @@ namespace CatalogMicroservice.Mappings
                 Name = model.Name
             };
         }
+        public ProductCategory Map(ProductCategoryCreateDto dto)
+        {
+            return new ProductCategory
+            {
+                Id = dto.Id,
+                Name = dto.Name
+            };
+        }
         public IEnumerable<ProductCategoryDto> MapList(
             IEnumerable<ProductCategory> models)
         {
