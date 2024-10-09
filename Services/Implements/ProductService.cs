@@ -21,6 +21,7 @@ namespace CatalogMicroservice.Services.Implements
         {
             var prod=_mapper.Map(productDto);
             await _repository.Add(prod);
+            prod=await _repository.GetById(prod.Id);
             return _mapper.Map(prod);
         }
 

@@ -34,6 +34,7 @@ namespace CatalogMicroservice.Repositories.Implements
         {
             return await _context.Products
                 .Where(p => !p.IsDeleted)
+                .Include(p=>p.Category)
                 .ToListAsync();
         }
 
@@ -50,6 +51,7 @@ namespace CatalogMicroservice.Repositories.Implements
             return await _context.Products
                 .Where(p => !p.IsDeleted &&
                 p.Id == id)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync();
         }
 
