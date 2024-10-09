@@ -14,6 +14,7 @@ namespace CatalogMicroservice.Mappings
         {
             return new Product
             {
+                Id = dto.Id,
                 Name = dto.Name,
                 Count = dto.Count,
                 Price = dto.Price,
@@ -24,6 +25,7 @@ namespace CatalogMicroservice.Mappings
         {
             return new ProductDto
             {
+                Id = model.Id,
                 Name = model.Name,
                 Count = model.Count,
                 Price = model.Price,
@@ -38,6 +40,17 @@ namespace CatalogMicroservice.Mappings
                 Count = dto.Count,
                 Price = dto.Price,
                 ProductCategoryId = dto.ProductCategoryId
+            };
+        }
+        public Product Map(ProductUpdateDto dto)
+        {
+            return new Product
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Count = dto.Count,
+                Price = dto.Price,
+                ProductCategoryId = dto.ProductCategoryId,
             };
         }
         public IEnumerable<ProductDto> MapList(

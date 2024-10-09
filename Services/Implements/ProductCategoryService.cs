@@ -1,4 +1,5 @@
 ﻿using CatalogMicroservice.DTO;
+using CatalogMicroservice.DTO.ProductCategory;
 using CatalogMicroservice.Mappings;
 using CatalogMicroservice.Repositories.Interfaces;
 using CatalogMicroservice.Services.Interfaces;
@@ -67,7 +68,7 @@ namespace CatalogMicroservice.Services.Implements
             return _mapper.MapList(categories);
         }
 
-        public async Task<ProductCategoryDto> Update(long id, ProductCategoryCreateDto productCategoryDto)
+        public async Task<ProductCategoryDto> Update(long id, ProductCategoryUpdateDto productCategoryDto)
         {
             var cat = _mapper.Map(productCategoryDto);
             await _repository.Update(id, cat);

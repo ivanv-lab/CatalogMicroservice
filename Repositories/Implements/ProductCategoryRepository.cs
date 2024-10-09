@@ -50,7 +50,7 @@ namespace CatalogMicroservice.Repositories.Implements
         public async Task Update(long id, ProductCategory category)
         {
             var cat = await _context.Categories.FindAsync(id);
-            cat = category;
+            cat.Name=category.Name;
             await _context.SaveChangesAsync();
         }
     }

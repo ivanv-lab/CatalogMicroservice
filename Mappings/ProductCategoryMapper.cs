@@ -1,4 +1,5 @@
 ﻿using CatalogMicroservice.DTO;
+using CatalogMicroservice.DTO.ProductCategory;
 using CatalogMicroservice.Models;
 
 namespace CatalogMicroservice.Mappings
@@ -9,6 +10,7 @@ namespace CatalogMicroservice.Mappings
         {
             return new ProductCategory
             {
+                Id = dto.Id,
                 Name = dto.Name
             };
         }
@@ -16,14 +18,22 @@ namespace CatalogMicroservice.Mappings
         {
             return new ProductCategoryDto
             {
+                Id = model.Id,
                 Name = model.Name
+            };
+        }
+        public ProductCategory Map(ProductCategoryUpdateDto dto)
+        {
+            return new ProductCategory
+            {
+                Id = dto.Id,
+                Name = dto.Name
             };
         }
         public ProductCategory Map(ProductCategoryCreateDto dto)
         {
             return new ProductCategory
             {
-                Id = dto.Id,
                 Name = dto.Name
             };
         }

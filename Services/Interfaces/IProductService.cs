@@ -11,7 +11,7 @@ namespace CatalogMicroservice.Services.Interfaces
             string? searchString, string? sortOrder,
             string? sortItem);
         public Task<ProductDto> Create(ProductCreateDto productDto);
-        public Task<ProductDto> Update(long id, ProductCreateDto productDto);
+        public Task<ProductDto> Update(long id, ProductUpdateDto productDto);
         public Task<bool> Delete(long id);
         public Task<IEnumerable<ProductDto>> Search(string? searchString);
         public Task<int> GetCount();

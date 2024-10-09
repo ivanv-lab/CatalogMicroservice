@@ -37,6 +37,9 @@ namespace CatalogMicroservice.Models
                 .HasOne(ppv=>ppv.Property)
                 .WithMany(p=>p.ProductPropertyValues)
                 .HasForeignKey(ppv=>ppv.PropertyId);
+
+            modelBuilder.Entity<ProductPropertyValue>()
+                .HasKey(ppv => new { ppv.ProductId, ppv.PropertyId });
         }
     }
 }

@@ -5,6 +5,8 @@ using CatalogMicroservice.Repositories.Implements;
 using CatalogMicroservice.Repositories.Interfaces;
 using CatalogMicroservice.Services.Implements;
 using CatalogMicroservice.Services.Interfaces;
+using CatalogMicroservice.Utils;
+using System.Reflection;
 
 namespace CatalogMicroservice
 {
@@ -19,7 +21,13 @@ namespace CatalogMicroservice
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFilename =
+                $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext
+                    .BaseDirectory, xmlFilename));
+            });
             builder.Services.AddControllers();
             builder.Services.AddScoped<CatalogDbContext>();
 
@@ -32,6 +40,11 @@ namespace CatalogMicroservice
             builder.Services.AddTransient<IProductRepository,
                 ProductRepository>();
 
+            builder.Services.AddScoped<ProductPropertyValueMapper>();
+            builder.Services.AddScoped<ProductPropertyMapper>();
+            builder.Services.AddScoped<ProductCategoryMapper>();
+            builder.Services.AddScoped<ProductMapper>();
+
             builder.Services.AddTransient<IProductPropertyValueService,
                 ProductPropertyValueService>();
             builder.Services.AddTransient<IProductPropertyService,
@@ -43,6 +56,11 @@ namespace CatalogMicroservice
 
             var app = builder.Build();
 
+            using var scope=app.Services.CreateScope();
+            using var dbContext = scope.ServiceProvider
+                .GetRequiredService<CatalogDbContext>();
+            dbContext.Database.EnsureCreatedAsync();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -51,7 +69,8 @@ namespace CatalogMicroservice
             }
 
             app.UseHttpsRedirection();
-
+            app.MapControllers();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseAuthorization();
             app.Run();
         }
