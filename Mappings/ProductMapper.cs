@@ -63,5 +63,13 @@ namespace CatalogMicroservice.Mappings
             }
             return result;
         }
+        public Product UpdateMap(Product model,ProductUpdateDto dto)
+        {
+            model.Name= dto.Name;
+            model.Count= dto.Count;
+            model.Price= dto.Price;
+            model.ProductCategoryId= dto.ProductCategoryId;
+            return model;
+        }
     }
 }

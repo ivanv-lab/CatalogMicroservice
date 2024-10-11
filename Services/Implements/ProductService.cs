@@ -82,9 +82,12 @@ namespace CatalogMicroservice.Services.Implements
 
         public async Task<ProductDto> Update(long id, ProductUpdateDto productDto)
         {
-            var prod=_mapper.Map(productDto);
-            await _repository.Update(id, prod);
-            return _mapper.Map(prod);
+            var updProd = await _repository.GetById(id);
+            updProd = _mapper.UpdateMap
+                (updProd, productDto);
+            await _repository.Update(updProd);
+            updProd=await _repository.GetById(id);
+            return _mapper.Map(updProd);
         }
         public async Task<int> GetCount()
         {

@@ -70,11 +70,10 @@ namespace CatalogMicroservice.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var cat = await _service.GetById(id);
-            if (cat != null)
+            bool res=await _service.Delete(id);
+            if (res)
             {
-                await _service.Delete(id);
-                return Ok(cat);
+                return Ok();
             }
             return BadRequest();
         }

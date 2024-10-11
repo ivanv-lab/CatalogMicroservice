@@ -43,6 +43,7 @@ namespace CatalogMicroservice.Repositories.Implements
             return await _context.Products
                 .Where(p=>!p.IsDeleted &&
                 p.ProductCategoryId==categoryId)
+                .Include(p=>p.Category)
                 .ToListAsync();
         }
 
@@ -58,13 +59,13 @@ namespace CatalogMicroservice.Repositories.Implements
         public async Task<int> GetCount()
         {
             return await _context.Products
+                .Where(p=>!p.IsDeleted)
                 .CountAsync();
         }
 
-        public async Task Update(long id, Product product)
+        public async Task Update(Product product)
         {
-            var prod = await _context.Products.FindAsync(id);
-            prod = product;
+            _context.Entry(product).State=EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

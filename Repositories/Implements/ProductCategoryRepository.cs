@@ -44,6 +44,7 @@ namespace CatalogMicroservice.Repositories.Implements
         public async Task<int> GetCount()
         {
             return await _context.Categories
+                .Where(c=>!c.IsDeleted)
                 .CountAsync();
         }
 

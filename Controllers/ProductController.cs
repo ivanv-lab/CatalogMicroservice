@@ -40,7 +40,7 @@ namespace CatalogMicroservice.Controllers
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        [HttpGet("categoryId/{id}")]
+        [HttpGet("categoryId")]
         public async Task<IActionResult> GetByCategoryId(long categoryId)
         {
             var prods = await _service.GetByCategory(categoryId);

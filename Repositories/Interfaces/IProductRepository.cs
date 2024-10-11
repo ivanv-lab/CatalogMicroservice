@@ -6,7 +6,7 @@ namespace CatalogMicroservice.Repositories.Interfaces
     {
         //Admin
         public Task Add(Product product);
-        public Task Update(long id,Product product);
+        public Task Update(Product product);
         public Task Delete(long id);
         //Prod
         public Task<Product> GetById(long id);
