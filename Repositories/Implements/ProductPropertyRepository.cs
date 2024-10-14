@@ -41,5 +41,10 @@ namespace CatalogMicroservice.Repositories.Implements
             prop = productProperty;
             await _context.SaveChangesAsync();
         }
+        public async Task<int> Count()
+        {
+            return await _context
+                .Properties.CountAsync();
+        }
     }
 }

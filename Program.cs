@@ -54,6 +54,16 @@ namespace CatalogMicroservice
             builder.Services.AddTransient<IProductService,
                 ProductService>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("http://localhost:5205");
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             using var scope=app.Services.CreateScope();
@@ -71,6 +81,7 @@ namespace CatalogMicroservice
             app.UseHttpsRedirection();
             app.MapControllers();
             app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseCors();
             app.UseAuthorization();
             app.Run();
         }
