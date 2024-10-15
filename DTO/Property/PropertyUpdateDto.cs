@@ -1,6 +1,6 @@
-﻿namespace CatalogMicroservice.DTO
+﻿namespace CatalogMicroservice.DTO.Property
 {
-    public class ProductPropertyDto
+    public class PropertyUpdateDto
     {
         public long Id { get; set; }
         public string Name { get; set; }

@@ -1,16 +1,15 @@
-﻿using CatalogMicroservice.DTO.ProductProperty;
+﻿using CatalogMicroservice.DTO.Property;
 using CatalogMicroservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CatalogMicroservice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductPropertyController:ControllerBase
+    public class PropertyController:ControllerBase
     {
-        private readonly IProductPropertyService _service;
-        public ProductPropertyController(IProductPropertyService service)
+        private readonly IPropertyService _service;
+        public PropertyController(IPropertyService service)
         {
             _service = service;
         }
@@ -28,14 +27,14 @@ namespace CatalogMicroservice.Controllers
         }
         [HttpPost("add")]
         public async Task<IActionResult> Create
-            ([FromBody] ProductPropertyCreateDto request)
+            ([FromBody] PropertyCreateDto request)
         {
             var newProp=await _service.Create(request);
             return Ok(newProp);
         }
         [HttpPut("upd")]
         public async Task<IActionResult> Update
-            ([FromBody] ProductPropertyUpdateDto request)
+            ([FromBody] PropertyUpdateDto request)
         {
             var updProp = await _service
                 .Update(request.Id, request);
@@ -59,7 +58,7 @@ namespace CatalogMicroservice.Controllers
             props=props.Skip((page-1)*pageSize)
                 .Take(pageSize)
                 .ToList();
-            var count = await _service.Count();
+            var count = await _service.GetCount();
             var response = new
             {
                 items = props,

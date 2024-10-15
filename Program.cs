@@ -31,24 +31,20 @@ namespace CatalogMicroservice
             builder.Services.AddControllers();
             builder.Services.AddScoped<CatalogDbContext>();
 
-            builder.Services.AddTransient<IProductPropertyValueRepository,
-                ProductPropertyValueRepository>();
-            builder.Services.AddTransient<IProductPropertyRepository,
-                ProductPropertyRepository>();
+            builder.Services.AddTransient<IPropertyRepository,
+                PropertyRepository>();
             builder.Services.AddTransient<IProductCategoryRepository,
                 ProductCategoryRepository>();
             builder.Services.AddTransient<IProductRepository,
                 ProductRepository>();
 
-            builder.Services.AddScoped<ProductPropertyValueMapper>();
+            builder.Services.AddScoped<PropertyMapper>();
             builder.Services.AddScoped<ProductPropertyMapper>();
             builder.Services.AddScoped<ProductCategoryMapper>();
             builder.Services.AddScoped<ProductMapper>();
 
-            builder.Services.AddTransient<IProductPropertyValueService,
-                ProductPropertyValueService>();
-            builder.Services.AddTransient<IProductPropertyService,
-                ProductPropertyService>();
+            builder.Services.AddTransient<IPropertyService,
+                PropertyService>();
             builder.Services.AddTransient<IProductCategoryService,
                 ProductCategoryService>();
             builder.Services.AddTransient<IProductService,

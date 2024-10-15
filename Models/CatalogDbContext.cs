@@ -2,7 +2,7 @@
 
 namespace CatalogMicroservice.Models
 {
-    public class CatalogDbContext:DbContext
+    public class CatalogDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
         public CatalogDbContext(IConfiguration configuration)
@@ -11,8 +11,9 @@ namespace CatalogMicroservice.Models
         }
         public DbSet<ProductCategory> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductProperty> Properties { get; set; }
-        public DbSet<ProductPropertyValue> Values { get; set; }
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<CategoryProperty> CategoriesProperties { get; set; }
+        public DbSet<ProductProperty> ProductProperties { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
@@ -28,18 +29,28 @@ namespace CatalogMicroservice.Models
                 .WithMany(pc => pc.Products)
                 .HasForeignKey(p => p.ProductCategoryId);
 
-            modelBuilder.Entity<ProductPropertyValue>()
-                .HasOne(ppv => ppv.Product)
-                .WithMany(p => p.ProductPropertyValues)
-                .HasForeignKey(ppv => ppv.ProductId);
+            modelBuilder.Entity<CategoryProperty>()
+                .HasKey(cp => new { cp.CategoryId, cp.PropertyId });
 
-            modelBuilder.Entity<ProductPropertyValue>()
-                .HasOne(ppv=>ppv.Property)
-                .WithMany(p=>p.ProductPropertyValues)
-                .HasForeignKey(ppv=>ppv.PropertyId);
+            modelBuilder.Entity<CategoryProperty>()
+                .HasOne(cp => cp.Category)
+                .WithMany(c => c.Properties)
+                .HasForeignKey(cp => cp.CategoryId);
 
-            modelBuilder.Entity<ProductPropertyValue>()
-                .HasKey(ppv => new { ppv.ProductId, ppv.PropertyId });
+            modelBuilder.Entity<CategoryProperty>()
+                .HasOne(cp => cp.Property)
+                .WithMany(c => c.Categories)
+                .HasForeignKey(cp => cp.PropertyId);
+
+            modelBuilder.Entity<ProductProperty>()
+                .HasOne(pp => pp.Product)
+                .WithMany(p => p.Properties)
+                .HasForeignKey(pp => pp.ProductId);
+
+            modelBuilder.Entity<ProductProperty>()
+                .HasOne(pp => pp.Property)
+                .WithMany(p=>p.Products)
+                .HasForeignKey(pp => pp.PropertyId);
         }
     }
 }
