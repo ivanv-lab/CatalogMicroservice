@@ -36,22 +36,28 @@ namespace CatalogMicroservice.Repositories.Implements
         public async Task<IEnumerable<CategoryProperty>> GetByCategoryId(long categoryId)
         {
             return await _context.CategoriesProperties
-                .Where()
+                .Where(cp => cp.CategoryId == categoryId)
+                .ToListAsync();
         }
 
-        public Task<CategoryProperty> GetById(long id)
+        public async Task<CategoryProperty> GetById(long id)
         {
-            throw new NotImplementedException();
+            return await _context.CategoriesProperties.FindAsync(id);
         }
 
-        public Task<IEnumerable<CategoryProperty>> GetByPropertyId(long propertyId)
+        public async Task<IEnumerable<CategoryProperty>> GetByPropertyId(long propertyId)
         {
-            throw new NotImplementedException();
+            return await _context.CategoriesProperties
+                .Where(cp=>cp.PropertyId == propertyId)
+                .ToListAsync();
         }
 
-        public Task Update(long id, CategoryProperty categoryProperty)
+        public async Task Update(long id, CategoryProperty categoryProperty)
         {
-            throw new NotImplementedException();
+            var catProp=await _context.CategoriesProperties.FindAsync(id);
+            catProp.CategoryId=categoryProperty.CategoryId;
+            catProp.PropertyId = categoryProperty.PropertyId;
+            await _context.SaveChangesAsync();
         }
     }
 }
