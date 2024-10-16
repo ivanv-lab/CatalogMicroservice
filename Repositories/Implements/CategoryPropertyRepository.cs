@@ -37,7 +37,7 @@ namespace CatalogMicroservice.Repositories.Implements
         {
             return await _context.CategoriesProperties
                 .Where(cp => cp.CategoryId == categoryId)
-                .ToListAsync();
+                .ToListAsync() ?? null;
         }
 
         public async Task<CategoryProperty> GetById(long id)
