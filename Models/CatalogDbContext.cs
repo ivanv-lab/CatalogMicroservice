@@ -30,7 +30,7 @@ namespace CatalogMicroservice.Models
                 .HasForeignKey(p => p.ProductCategoryId);
 
             modelBuilder.Entity<CategoryProperty>()
-                .HasKey(cp => new { cp.CategoryId, cp.PropertyId });
+                .HasKey(cp =>cp.Id);
 
             modelBuilder.Entity<CategoryProperty>()
                 .HasOne(cp => cp.Category)

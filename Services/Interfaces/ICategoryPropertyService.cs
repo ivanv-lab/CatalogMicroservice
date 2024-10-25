@@ -1,10 +1,11 @@
-﻿using CatalogMicroservice.Models;
+﻿using CatalogMicroservice.DTO.CategoryProperty;
+using CatalogMicroservice.Models;
 
 namespace CatalogMicroservice.Services.Interfaces
 {
     public interface ICategoryPropertyService
     {
-        public Task<CategoryProperty> Create(CategoryProperty categoryProperty);
+        public Task<CategoryProperty> Create(CategoryPropertyCreateDto categoryProperty);
         public Task<CategoryProperty> Update(long id,
             CategoryProperty categoryProperty);
         public Task<bool> Delete(long id);

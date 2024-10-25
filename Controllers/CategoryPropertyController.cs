@@ -1,4 +1,5 @@
-﻿using CatalogMicroservice.Models;
+﻿using CatalogMicroservice.DTO.CategoryProperty;
+using CatalogMicroservice.Models;
 using CatalogMicroservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,10 @@ namespace CatalogMicroservice.Controllers
     public class CategoryPropertyController:ControllerBase
     {
         private readonly ICategoryPropertyService _service;
+        public CategoryPropertyController(ICategoryPropertyService service)
+        {
+            _service = service;
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
@@ -35,7 +40,7 @@ namespace CatalogMicroservice.Controllers
         }
         [HttpPost("add")]
         public async Task<IActionResult> Create
-            ([FromBody] CategoryProperty request)
+            ([FromBody] CategoryPropertyCreateDto request)
         {
             var newCatProp=await _service.Create(request);
             return Ok(newCatProp);

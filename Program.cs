@@ -31,8 +31,6 @@ namespace CatalogMicroservice
             builder.Services.AddControllers();
             builder.Services.AddScoped<CatalogDbContext>();
 
-            builder.Services.AddTransient<ICategoryPropertyRepository,
-                CategoryPropertyRepository>();
             builder.Services.AddTransient<IProductPropertyRepository,
                 ProductPropertRepository>();
             builder.Services.AddTransient<IPropertyRepository,
@@ -41,14 +39,16 @@ namespace CatalogMicroservice
                 ProductCategoryRepository>();
             builder.Services.AddTransient<IProductRepository,
                 ProductRepository>();
+            builder.Services.AddTransient<ICategoryPropertyRepository,
+    CategoryPropertyRepository>();
+
 
             builder.Services.AddScoped<PropertyMapper>();
             builder.Services.AddScoped<ProductPropertyMapper>();
             builder.Services.AddScoped<ProductCategoryMapper>();
             builder.Services.AddScoped<ProductMapper>();
+            builder.Services.AddScoped<CategoryPropertyMapper>();
 
-            builder.Services.AddTransient<ICategoryPropertyService,
-                CategoryPropertyService>();
             builder.Services.AddTransient<IProductPropertyService,
                 ProductPropertyService>();
             builder.Services.AddTransient<IPropertyService,
@@ -57,6 +57,9 @@ namespace CatalogMicroservice
                 ProductCategoryService>();
             builder.Services.AddTransient<IProductService,
                 ProductService>();
+            builder.Services.AddTransient<ICategoryPropertyService,
+    CategoryPropertyService>();
+
 
             builder.Services.AddCors(options =>
             {

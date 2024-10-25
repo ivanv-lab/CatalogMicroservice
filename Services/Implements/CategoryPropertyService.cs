@@ -1,4 +1,6 @@
-﻿using CatalogMicroservice.Models;
+﻿using CatalogMicroservice.DTO.CategoryProperty;
+using CatalogMicroservice.Mappings;
+using CatalogMicroservice.Models;
 using CatalogMicroservice.Repositories.Interfaces;
 using CatalogMicroservice.Services.Interfaces;
 
@@ -8,15 +10,20 @@ namespace CatalogMicroservice.Services.Implements
         ICategoryPropertyService
     {
         private readonly ICategoryPropertyRepository _repository;
-        public CategoryPropertyService(ICategoryPropertyRepository repository)
+        private readonly CategoryPropertyMapper _mapper;
+        public CategoryPropertyService(
+            ICategoryPropertyRepository repository,
+            CategoryPropertyMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public async Task<CategoryProperty> Create(CategoryProperty categoryProperty)
+        public async Task<CategoryProperty> Create(CategoryPropertyCreateDto categoryProperty)
         {
-            await _repository.Add(categoryProperty);
-            return categoryProperty;
+            var catProp = _mapper.Map(categoryProperty);
+            await _repository.Add(catProp);
+            return catProp;
         }
 
         public async Task<bool> Delete(long id)
