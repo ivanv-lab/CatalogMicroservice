@@ -61,15 +61,15 @@ namespace CatalogMicroservice
     CategoryPropertyService>();
 
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(policy =>
-                {
-                    policy.WithOrigins("http://localhost:5205");
-                    policy.AllowAnyHeader();
-                    policy.AllowAnyMethod();
-                });
-            });
+            // builder.Services.AddCors(options =>
+            // {
+            //     options.AddDefaultPolicy(policy =>
+            //     {
+            //         policy.WithOrigins("http://localhost:5205");
+            //         policy.AllowAnyHeader();
+            //         policy.AllowAnyMethod();
+            //     });
+            // });
 
             var app = builder.Build();
 

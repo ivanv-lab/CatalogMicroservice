@@ -16,9 +16,13 @@ namespace CatalogMicroservice.Models
         public DbSet<ProductProperty> ProductProperties { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
+            // optionsBuilder.UseSqlServer(
+            //     _configuration.GetConnectionString
+            //     ("PostgreSQLCatalogBase"));
+            optionsBuilder.UseNpgsql(
                 _configuration.GetConnectionString
-                ("SQLServerCatalogBase"));
+                ("PostgreSQLCatalogBase")
+            );
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
